@@ -5,7 +5,7 @@
 	- experience
 	- level
 	- attributes
-	- skills
+	- actions
 * bump attack
 	- die
 	- heal over time
