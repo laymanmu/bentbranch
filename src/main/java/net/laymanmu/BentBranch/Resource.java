@@ -1,5 +1,10 @@
 package net.laymanmu.BentBranch;
 
+import net.laymanmu.BentBranch.ops.problems.Problem;
+import net.laymanmu.BentBranch.ops.Settings;
+
+import static java.lang.Math.abs;
+
 public class Resource {
     private String name;
     private int max;
@@ -15,6 +20,14 @@ public class Resource {
         this.value = value;
     }
 
+    protected Resource() {
+        this.name  = "unknown";
+        this.max   = Settings.Resources.DefaultMax;
+        this.delta = Settings.Resources.DefaultDelta;
+        this.min   = Settings.Resources.DefaultMin;
+        this.value = this.max;
+    }
+
     public Resource(String name) {
         this.name  = name;
         this.max   = Settings.Resources.DefaultMax;
@@ -24,16 +37,33 @@ public class Resource {
     }
 
     public void update() {
-        int v = value + delta;
-        if (v > max) {
-            v = max;
+        changeBy(delta);
+    }
+
+    public void consume(Mob consumer, int amount) throws Problem {
+        var debit = abs(amount);
+        if (debit > value) {
+            throw Problem.ResourceOverConsumed(consumer, this, amount);
         }
+        changeBy(debit * -1);
+    }
+
+    public void produce(int amount) {
+        var credit = abs(amount);
+        changeBy(credit);
+    }
+
+    // helpers:
+
+    private void changeBy(int amount) {
+        var v = value + amount;
         if (v < min) {
             v = min;
         }
-        if (value != v) {
-            value = v;
+        if (v > max) {
+            v = max;
         }
+        value = v;
     }
 
     // accessors:
@@ -74,7 +104,38 @@ public class Resource {
         return value;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    // builder:
+
+    public static class ResourceBuilder {
+        private Resource resource;
+        private ResourceBuilder() {
+            resource = new Resource();
+        }
+        public ResourceBuilder withName(String name) {
+            resource.name = name;
+            return this;
+        }
+        public ResourceBuilder withMax(int max) {
+            resource.max = max;
+            return this;
+        }
+        public ResourceBuilder withDelta(int delta) {
+            resource.delta = delta;
+            return this;
+        }
+        public ResourceBuilder withMin(int min) {
+            resource.min = min;
+            return this;
+        }
+        public ResourceBuilder withValue(int value) {
+            resource.value = value;
+            return this;
+        }
+        public static ResourceBuilder resource() {
+            return new ResourceBuilder();
+        }
+        public Resource build() {
+            return resource;
+        }
     }
 }

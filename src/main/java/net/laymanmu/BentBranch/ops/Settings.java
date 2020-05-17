@@ -1,4 +1,4 @@
-package net.laymanmu.BentBranch;
+package net.laymanmu.BentBranch.ops;
 
 public final class Settings {
     public final class Mob {
