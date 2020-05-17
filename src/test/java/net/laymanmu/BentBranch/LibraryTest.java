@@ -32,4 +32,21 @@ public class LibraryTest {
         Assert.assertEquals("actions", mob.getActions().size(), 1);
         Assert.assertEquals("move", mob.getActions().get("move").getName(), "move");
     }
+
+    @Test
+    public void testMoveAction() {
+        var library = new Library();
+        var mob = library.getMob();
+
+        var moveAction = mob.getActions().get("move");
+        Assert.assertNotNull("moveAction", moveAction);
+
+        var origPosition = mob.getPosition();
+        Assert.assertEquals("origPosition", origPosition, mob.getPosition());
+
+        var nextPosition = origPosition.east();
+        moveAction.act(nextPosition);
+        Assert.assertEquals("nextPosition", nextPosition, mob.getPosition());
+    }
+
 }
