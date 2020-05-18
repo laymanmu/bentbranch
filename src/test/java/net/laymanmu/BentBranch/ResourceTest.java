@@ -66,10 +66,10 @@ public class ResourceTest {
     public void testConsume() throws Problem {
         var consumeAmount = 40;
         energy.consume(consumer, consumeAmount);
-        Assert.assertEquals("consumed", 100, energy.getValue()+consumeAmount);
+        Assert.assertEquals("consumed", 60, energy.getValue());
 
         energy.consume(consumer, consumeAmount);
-        Assert.assertEquals("consumed", 100, energy.getValue()+(consumeAmount*2));
+        Assert.assertEquals("consumed", 20, energy.getValue());
     }
 
     @Test(expected = ResourceProblem.class)
