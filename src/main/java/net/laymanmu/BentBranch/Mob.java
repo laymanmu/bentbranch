@@ -86,8 +86,8 @@ public class Mob {
     }
 
 
-    // accessors:
 
+    //region accessors
 
     public String getId() {
         return id;
@@ -168,4 +168,79 @@ public class Mob {
     public void setPosition(Point position) {
         this.position = position;
     }
+
+    //endregion accessors
+
+
+    //region builder
+
+    public static MobBuilder build(String mobName) {
+        return MobBuilder.mob(mobName);
+    }
+
+    public static class MobBuilder {
+        private Mob mob;
+
+        private MobBuilder(String name) {
+            mob = new Mob(name);
+        }
+
+        public MobBuilder withPosition(Point position) {
+            mob.position = position;
+            return this;
+        }
+
+        public MobBuilder withExperience(long experience) {
+            mob.experience = experience;
+            return this;
+        }
+
+        public MobBuilder withLevel(int level) {
+            mob.level = level;
+            return this;
+        }
+
+        public MobBuilder withDexterity(int dexterity) {
+            mob.dexterity = dexterity;
+            return this;
+        }
+
+        public MobBuilder withIntelligence(int intelligence) {
+            mob.intelligence = intelligence;
+            return this;
+        }
+
+        public MobBuilder withStrength(int strength) {
+            mob.strength = strength;
+            return this;
+        }
+
+        public MobBuilder withConstitution(int constitution) {
+            mob.constitution = constitution;
+            return this;
+        }
+
+        public MobBuilder withResources(HashMap<String, Resource> resources) {
+            mob.resources = resources;
+            return this;
+        }
+
+        public MobBuilder withActions(HashMap<String, Action> actions) {
+            mob.actions = actions;
+            return this;
+        }
+
+        public static MobBuilder mob(String name) {
+            return new MobBuilder(name);
+        }
+
+        public Mob build() {
+            return mob;
+        }
+    }
+
+    //endregion builder
+
+
+
 }

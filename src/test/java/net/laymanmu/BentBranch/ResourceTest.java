@@ -15,19 +15,21 @@ public class ResourceTest {
     @Before
     public void setup() {
         consumer = new Mob("consumer");
-        health = Resource.ResourceBuilder.resource()
+
+        health = Resource.build()
                 .withName("health")
-                .withMax(100)
                 .withMin(0)
+                .withMax(100)
+                .withValue(100)
                 .withDelta(1)
-                .withValue(100)
                 .build();
-        energy = Resource.ResourceBuilder.resource()
+
+        energy = Resource.build()
                 .withName("energy")
-                .withMax(100)
                 .withMin(0)
-                .withDelta(10)
+                .withMax(100)
                 .withValue(100)
+                .withDelta(10)
                 .build();
     }
 
@@ -38,6 +40,12 @@ public class ResourceTest {
         Assert.assertEquals("delta", 1, health.getDelta());
         Assert.assertEquals("min", 0, health.getMin());
         Assert.assertEquals("value", 100, health.getValue());
+
+        Assert.assertEquals("name", "energy", energy.getName());
+        Assert.assertEquals("max", 100, energy.getMax());
+        Assert.assertEquals("delta", 10, energy.getDelta());
+        Assert.assertEquals("min", 0, energy.getMin());
+        Assert.assertEquals("value", 100, energy.getValue());
     }
 
     @Test

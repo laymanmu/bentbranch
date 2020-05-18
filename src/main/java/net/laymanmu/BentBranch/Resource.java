@@ -104,7 +104,11 @@ public class Resource {
         return value;
     }
 
-    // builder:
+    //region builder
+
+    public static ResourceBuilder build() {
+        return ResourceBuilder.resource();
+    }
 
     public static class ResourceBuilder {
         private Resource resource;
@@ -138,4 +142,8 @@ public class Resource {
             return resource;
         }
     }
+
+    //endregion builder
+
+
 }
