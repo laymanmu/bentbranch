@@ -1,13 +1,6 @@
 package net.laymanmu.bentbranch;
 
-import net.laymanmu.bentbranch.actions.Action;
-import net.laymanmu.bentbranch.actions.MoveAction;
-import net.laymanmu.bentbranch.middleware.Middleware;
-import net.laymanmu.bentbranch.ops.Settings;
-import net.laymanmu.bentbranch.ops.problems.Problem;
-import net.laymanmu.bentbranch.ops.problems.ResourceProblem;
-
-import java.util.ArrayList;
+import net.laymanmu.bentbranch.Resource.ResourceName;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -18,6 +11,7 @@ public class Mob {
 
     // position:
     private Point position;
+    private Point target;
 
     // progression:
     private long experience;
@@ -29,49 +23,35 @@ public class Mob {
     private int strength;
     private int constitution;
 
-    // lists:
-    private HashMap<Resource.Name,Resource> resources;
-    private HashMap<Action.Name, Action> actions;
-    private ArrayList<Middleware> middleware;
+    // resources:
+    private HashMap<ResourceName, Resource> resources;
 
     public Mob(String name) {
-        this.id   = UUID.randomUUID().toString();
+        this.id = UUID.randomUUID().toString();
         this.name = name;
 
         this.position = new Point(Settings.Mob.DefaultPositionX, Settings.Mob.DefaultPositionY);
+        this.target = new Point(position.x, position.y);
 
-        this.dexterity    = Settings.Mob.DefaultDexterity;
+        this.dexterity = Settings.Mob.DefaultDexterity;
         this.intelligence = Settings.Mob.DefaultIntelligence;
-        this.strength     = Settings.Mob.DefaultStrength;
+        this.strength = Settings.Mob.DefaultStrength;
         this.constitution = Settings.Mob.DefaultConstitution;
 
         this.resources = new HashMap<>();
-        addResource(Resource.builder().withName(Resource.Name.Health).build());
-        addResource(Resource.builder().withName(Resource.Name.Energy).withDelta(10).build());
-
-        this.actions = new HashMap<>();
-        addAction(new MoveAction(this));
-
-        this.middleware = new ArrayList<>();
+        addResource(Resource.builder().withName(ResourceName.Health).build());
+        addResource(Resource.builder().withName(ResourceName.Energy).withDelta(10).build());
     }
 
-    public boolean isAlive() throws ResourceProblem {
-        return getResourceValue(Resource.Name.Health) > 0;
+    public boolean isAlive() {
+        return getResourceValue(ResourceName.Health) > 0;
     }
 
-    public void update(HashMap<String,String> state) throws Problem {
+    public void update(HashMap<String, String> state) {
         if (!isAlive()) {
             return;
         }
-        for (var resource : resources.values()) {
-            resource.update();
-        }
-        for (var action : actions.values()) {
-            action.update();
-        }
-
-        // invoke middleware in order:
-        middleware.forEach(mw -> mw.invoke(state));
+        resources.values().forEach(r -> r.update());
     }
 
 
@@ -79,43 +59,15 @@ public class Mob {
         this.resources.put(resource.getName(), resource);
     }
 
-    public int getResourceValue(Resource.Name resourceName) throws ResourceProblem {
-        var resource = this.resources.get(resourceName);
-        if (resource == null) {
-            throw Problem.ResourceNotFound(this, resourceName);
-        }
-        return resource.getValue();
+    public int getResourceValue(ResourceName resourceName) {
+        return this.resources.get(resourceName).getValue();
     }
-
-
-    public void addMiddleware(Middleware mw) {
-        middleware.add(mw);
-    }
-
-
-    public void addAction(Action action) {
-        this.actions.put(action.getName(), action);
-    }
-
-    public Action getAction(Action.Name actionName) {
-        return this.actions.get(actionName);
-    }
-
-
-
-
-
-
 
 
     @Override
     public String toString() {
-        return "mob:"+ getName();
+        return "mob:" + getName();
     }
-
-
-
-    //region generated accessors
 
     public String getId() {
         return id;
@@ -123,6 +75,22 @@ public class Mob {
 
     public String getName() {
         return name;
+    }
+
+    public Point getPosition() {
+        return position;
+    }
+
+    public void setPosition(Point position) {
+        this.position = position;
+    }
+
+    public Point getTarget() {
+        return target;
+    }
+
+    public void setTarget(Point target) {
+        this.target = target;
     }
 
     public long getExperience() {
@@ -173,102 +141,103 @@ public class Mob {
         this.constitution = constitution;
     }
 
-    public HashMap<Resource.Name, Resource> getResources() {
+    public HashMap<ResourceName, Resource> getResources() {
         return resources;
     }
 
-    public void setResources(HashMap<Resource.Name, Resource> resources) {
+    public void setResources(HashMap<ResourceName, Resource> resources) {
         this.resources = resources;
     }
 
-    public HashMap<Action.Name, Action> getActions() {
-        return actions;
-    }
 
-    public void setActions(HashMap<Action.Name, Action> actions) {
-        this.actions = actions;
-    }
+    public static final class MobBuilder {
+        // identifiers:
+        private String id;
+        private String name;
+        // position:
+        private Point position;
+        private Point target;
+        // progression:
+        private long experience;
+        private int level;
+        // attributes:
+        private int dexterity;
+        private int intelligence;
+        private int strength;
+        private int constitution;
+        // resources:
+        private HashMap<ResourceName, Resource> resources;
 
-    public Point getPosition() {
-        return position;
-    }
+        private MobBuilder() {
+        }
 
-    public void setPosition(Point position) {
-        this.position = position;
-    }
+        public static MobBuilder aMob() {
+            return new MobBuilder();
+        }
 
-    //endregion accessors
-
-
-    //region generated builder
-
-    public static MobBuilder build(String mobName) {
-        return MobBuilder.mob(mobName);
-    }
-
-    public static class MobBuilder {
-        private final Mob mob;
-
-        private MobBuilder(String name) {
-            mob = new Mob(name);
+        public MobBuilder withName(String name) {
+            this.name = name;
+            return this;
         }
 
         public MobBuilder withPosition(Point position) {
-            mob.position = position;
+            this.position = position;
+            return this;
+        }
+
+        public MobBuilder withTarget(Point target) {
+            this.target = target;
             return this;
         }
 
         public MobBuilder withExperience(long experience) {
-            mob.experience = experience;
+            this.experience = experience;
             return this;
         }
 
         public MobBuilder withLevel(int level) {
-            mob.level = level;
+            this.level = level;
             return this;
         }
 
         public MobBuilder withDexterity(int dexterity) {
-            mob.dexterity = dexterity;
+            this.dexterity = dexterity;
             return this;
         }
 
         public MobBuilder withIntelligence(int intelligence) {
-            mob.intelligence = intelligence;
+            this.intelligence = intelligence;
             return this;
         }
 
         public MobBuilder withStrength(int strength) {
-            mob.strength = strength;
+            this.strength = strength;
             return this;
         }
 
         public MobBuilder withConstitution(int constitution) {
-            mob.constitution = constitution;
+            this.constitution = constitution;
             return this;
         }
 
-        public MobBuilder withResources(HashMap<Resource.Name, Resource> resources) {
-            mob.resources = resources;
+        public MobBuilder withResources(HashMap<Resource.ResourceName, Resource> resources) {
+            this.resources = resources;
             return this;
-        }
-
-        public MobBuilder withActions(HashMap<Action.Name, Action> actions) {
-            mob.actions = actions;
-            return this;
-        }
-
-        public static MobBuilder mob(String name) {
-            return new MobBuilder(name);
         }
 
         public Mob build() {
+            Mob mob = new Mob(name);
+            mob.setPosition(position);
+            mob.setTarget(target);
+            mob.setExperience(experience);
+            mob.setLevel(level);
+            mob.setDexterity(dexterity);
+            mob.setIntelligence(intelligence);
+            mob.setStrength(strength);
+            mob.setConstitution(constitution);
+            mob.setResources(resources);
             return mob;
         }
     }
-
-    //endregion builder
-
-
-
 }
+

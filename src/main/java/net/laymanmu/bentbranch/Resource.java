@@ -1,23 +1,20 @@
 package net.laymanmu.bentbranch;
 
-import net.laymanmu.bentbranch.ops.problems.Problem;
-import net.laymanmu.bentbranch.ops.Settings;
-
 import static java.lang.Math.abs;
 
 public class Resource {
-    public enum Name {
+    public enum ResourceName {
         None, Health, Energy
     }
 
-    private Resource.Name name;
+    private ResourceName name;
     private int max;
     private int delta;
     private int min;
     private int value;
 
     public Resource() {
-        this.name  = Resource.Name.None;
+        this.name  = ResourceName.None;
         this.max   = Settings.Resources.DefaultMax;
         this.delta = Settings.Resources.DefaultDelta;
         this.min   = Settings.Resources.DefaultMin;
@@ -28,17 +25,17 @@ public class Resource {
         changeBy(delta);
     }
 
-    public void consume(Mob consumer, int amount) throws Problem {
-        var debit = abs(amount);
-        if (debit > value) {
-            throw Problem.ResourceOverConsumed(consumer, this, amount);
+    public boolean consume(int amount) {
+        var balance = value - abs(amount);
+        if (balance < min) {
+            return false;
         }
-        changeBy(debit * -1);
+        value = balance;
+        return true;
     }
 
-    public void produce(int amount) {
-        var credit = abs(amount);
-        changeBy(credit);
+    public boolean produce(int amount) {
+        return changeBy(abs(amount));
     }
 
     public void drain() {
@@ -49,8 +46,7 @@ public class Resource {
         value = max;
     }
 
-
-    private void changeBy(int amount) {
+    private boolean changeBy(int amount) {
         var v = value + amount;
         if (v < min) {
             v = min;
@@ -58,12 +54,16 @@ public class Resource {
         if (v > max) {
             v = max;
         }
-        value = v;
+        if (value != v) {
+            value = v;
+            return true;
+        }
+        return false;
     }
 
     //region accessors
 
-    public Name getName() {
+    public ResourceName getName() {
         return name;
     }
 
@@ -99,7 +99,7 @@ public class Resource {
             resource = new Resource();
         }
 
-        public ResourceBuilder withName(Name name) {
+        public ResourceBuilder withName(ResourceName name) {
             resource.name = name;
             return this;
         }
