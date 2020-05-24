@@ -52,5 +52,29 @@ public class TileMapTest {
         Assert.assertTrue("clear way", room.move(mob1, mob1.getPosition().south(3)));
         Assert.assertTrue("no collision", room.move(mob2, point));
     }
+
+    @Test
+    public void testUpdate() {
+        Mob mob = new Mob("mob");
+        Assert.assertTrue("move", room.move(mob, new Point(1,1)));
+        Assert.assertEquals("health start", 100, mob.health());
+        Assert.assertEquals("energy start", 100, mob.energy());
+
+        mob.consume(Resource.ResourceName.Health, 50);
+        mob.consume(Resource.ResourceName.Energy, 50);
+        Assert.assertEquals("health consumed", 50, mob.health());
+        Assert.assertEquals("energy consumed", 50, mob.energy());
+
+        int healthDelta = 1;
+        int energyDelta = 5;
+
+        room.update();
+        Assert.assertEquals("health update 1", 50+healthDelta, mob.health());
+        Assert.assertEquals("energy update 1", 50+energyDelta, mob.energy());
+
+        room.update();
+        Assert.assertEquals("health update 2", 50+healthDelta*2, mob.health());
+        Assert.assertEquals("energy update 2", 50+energyDelta*2, mob.energy());
+    }
 }
 

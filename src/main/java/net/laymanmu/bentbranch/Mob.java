@@ -40,14 +40,14 @@ public class Mob {
 
         this.resources = new HashMap<>();
         addResource(Resource.builder().withName(ResourceName.Health).build());
-        addResource(Resource.builder().withName(ResourceName.Energy).withDelta(10).build());
+        addResource(Resource.builder().withName(ResourceName.Energy).withDelta(5).build());
     }
 
     public boolean isAlive() {
         return getResourceValue(ResourceName.Health) > 0;
     }
 
-    public void update(HashMap<String, String> state) {
+    public void update(TileMap tileMap) {
         if (!isAlive()) {
             return;
         }
@@ -61,6 +61,38 @@ public class Mob {
     public int getResourceValue(ResourceName resourceName) {
         return this.resources.get(resourceName).getValue();
     }
+
+    public Resource getResource(ResourceName resourceName) {
+        return resources.get(resourceName);
+    }
+
+
+    // syntactic helpers:
+
+    public static MobBuilder build() {
+        return Mob.MobBuilder.aMob();
+    }
+
+    public void produce(ResourceName resourceName, int amount) {
+        resources.get(resourceName).produce(amount);
+    }
+
+    public void consume(ResourceName resourceName, int amount) {
+        resources.get(resourceName).consume(amount);
+    }
+
+    public int health() {
+        return getResourceValue(ResourceName.Health);
+    }
+
+    public int energy() {
+        return getResourceValue(ResourceName.Energy);
+    }
+
+
+
+
+
 
     @Override
     public String toString() {

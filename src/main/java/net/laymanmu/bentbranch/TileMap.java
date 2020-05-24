@@ -55,6 +55,11 @@ public class TileMap {
         this.tiles[tile.point.x + tile.point.y*size.x] = tile;
     }
 
+    public void update() {
+        mobs.values().stream().filter(mob -> mob.isAlive()).forEach(mob -> mob.update(this));
+    }
+
+
     // factories:
 
     public static TileMap Room(Point size) {

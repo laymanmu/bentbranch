@@ -27,6 +27,7 @@ public class MobTest {
 
         // resources:
         Assert.assertEquals("health", mob.getResourceValue(ResourceName.Health), 100);
+        Assert.assertEquals("energy", mob.getResourceValue(ResourceName.Energy), 100);
 
         // attributes:
         Assert.assertEquals("dexterity", mob.getDexterity(), 10);
@@ -54,4 +55,16 @@ public class MobTest {
         mob.setTarget(nextTarget);
         Assert.assertEquals("next", nextTarget, mob.getTarget());
     }
+
+    @Test
+    public void testResource() {
+        Assert.assertEquals("start", 100, mob.health());
+        mob.consume(ResourceName.Health, 50);
+        Assert.assertEquals("half", 50, mob.health());
+        mob.produce(ResourceName.Health, 20);
+        Assert.assertEquals("heal", 70, mob.health());
+        mob.produce(ResourceName.Health, 130);
+        Assert.assertEquals("over heal", 100, mob.health());
+    }
+
 }
