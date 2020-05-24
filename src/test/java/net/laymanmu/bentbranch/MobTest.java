@@ -23,7 +23,7 @@ public class MobTest {
 
         // progression:
         Assert.assertEquals("experience", mob.getExperience(), 0);
-        Assert.assertEquals("level", mob.getLevel(), 0);
+        Assert.assertEquals("level", mob.getLevel(), 1);
 
         // resources:
         Assert.assertEquals("health", mob.getResourceValue(ResourceName.Health), 100);
@@ -65,6 +65,8 @@ public class MobTest {
         Assert.assertEquals("heal", 70, mob.health());
         mob.produce(ResourceName.Health, 130);
         Assert.assertEquals("over heal", 100, mob.health());
+
+        mob.consume(ResourceName.Health, 200);
     }
 
 }

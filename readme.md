@@ -1,23 +1,36 @@
 
-## features:
-
-* mob
+Mobs:
 	- experience
 	- level
-	- attributes
-	- actions
-* bump attack
-	- die
-	- heal over time
-* items
+	- attributes (d.i.s.c.):
+	    * dexterity
+	    * intelligence
+	    * strength
+	    * constitution
+	- resources
+	    * health
+	    * energy
+	- death
+	
+Collisions:
+	- bump attack
+	
+Screens:
+    - tilemap
+    - tilemap view
+    
+Items:
 	- bag
 	- pickup
 	- drop
-	- sell
-	- buy
 	- use
 	- equip
 
+Shop:
+    - buy
+    - sell
+    
+Save
 
 
 

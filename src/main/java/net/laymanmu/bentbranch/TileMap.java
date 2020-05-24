@@ -6,15 +6,20 @@ public class TileMap {
     public final Point size;
     private final Tile[] tiles;
     private final HashMap<String,Mob> mobs;
+    private final Dice dice;
 
     public TileMap(int width, int height) {
         this.size = new Point(width,height);
         this.tiles = new Tile[width*height];
         this.mobs = new HashMap<>();
+        this.dice = new Dice();
     }
 
     public void onCollision(Mob movingMob, Mob restingMob) {
-        System.out.println(movingMob +" collided into "+ restingMob);
+        this.dice.attack(movingMob, restingMob);
+        if (!restingMob.isAlive()) {
+            System.out.println(restingMob +" has died");
+        }
     }
 
     public boolean move(Mob mob, Point point) {

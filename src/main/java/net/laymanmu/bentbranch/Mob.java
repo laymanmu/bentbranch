@@ -9,11 +9,11 @@ public class Mob {
     private final String id;
     private final String name;
 
-    // position:
+    // positions:
     private Point position;
     private Point target;
 
-    // progression:
+    // progressions:
     private long experience;
     private int level;
 
@@ -27,17 +27,25 @@ public class Mob {
     private HashMap<ResourceName, Resource> resources;
 
     public Mob(String name) {
+        // identifiers:
         this.id = UUID.randomUUID().toString();
         this.name = name;
 
+        // progressions:
+        experience = 0;
+        level = 1;
+
+        // positions:
         this.position = new Point(Settings.Mob.DefaultPositionX, Settings.Mob.DefaultPositionY);
         this.target = new Point(position.x, position.y);
 
+        // attributes:
         this.dexterity = Settings.Mob.DefaultDexterity;
         this.intelligence = Settings.Mob.DefaultIntelligence;
         this.strength = Settings.Mob.DefaultStrength;
         this.constitution = Settings.Mob.DefaultConstitution;
 
+        // resources:
         this.resources = new HashMap<>();
         addResource(Resource.builder().withName(ResourceName.Health).build());
         addResource(Resource.builder().withName(ResourceName.Energy).withDelta(5).build());
@@ -79,6 +87,10 @@ public class Mob {
 
     public void consume(ResourceName resourceName, int amount) {
         resources.get(resourceName).consume(amount);
+    }
+
+    public void takeDamage(int amount) {
+        resources.get(ResourceName.Health).consumeUpTo(amount);
     }
 
     public int health() {

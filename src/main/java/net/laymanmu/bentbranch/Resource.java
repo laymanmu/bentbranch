@@ -34,6 +34,13 @@ public class Resource {
         return true;
     }
 
+    public void consumeUpTo(int amount) {
+        // set value to min if not enough to consume amount:
+        if (!consume(amount)) {
+            value = min;
+        }
+    }
+
     public boolean produce(int amount) {
         return changeBy(abs(amount));
     }
