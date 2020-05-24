@@ -54,7 +54,6 @@ public class Mob {
         resources.values().forEach(r -> r.update());
     }
 
-
     public void addResource(Resource resource) {
         this.resources.put(resource.getName(), resource);
     }
@@ -62,7 +61,6 @@ public class Mob {
     public int getResourceValue(ResourceName resourceName) {
         return this.resources.get(resourceName).getValue();
     }
-
 
     @Override
     public String toString() {

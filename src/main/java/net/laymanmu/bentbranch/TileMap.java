@@ -1,12 +1,46 @@
 package net.laymanmu.bentbranch;
 
+import java.util.HashMap;
+
 public class TileMap {
     public final Point size;
     private final Tile[] tiles;
+    private final HashMap<String,Mob> mobs;
 
     public TileMap(int width, int height) {
         this.size = new Point(width,height);
         this.tiles = new Tile[width*height];
+        this.mobs = new HashMap<>();
+    }
+
+    public void onCollision(Mob movingMob, Mob restingMob) {
+        System.out.println(movingMob +" collided into "+ restingMob);
+    }
+
+    public boolean move(Mob mob, Point point) {
+        mobs.put(mob.getId(), mob);
+
+        if (getTile(point).isBlocked) {
+            return false;
+        }
+
+        Mob restingMob = getMob(point);
+        if (restingMob != null) {
+            onCollision(mob, restingMob);
+            return false;
+        }
+
+        mob.setPosition(point);
+        return true;
+    }
+
+    public Mob getMob(Point point) {
+        for (var mob : mobs.values()) {
+            if (mob.getPosition().equals(point)) {
+                return mob;
+            }
+        }
+        return null;
     }
 
     public Tile getTile(int x, int y) {
@@ -21,15 +55,6 @@ public class TileMap {
         this.tiles[tile.point.x + tile.point.y*size.x] = tile;
     }
 
-   public boolean move(Mob mob, Point point) {
-        if (getTile(point).isBlocked) {
-            return false;
-        }
-        mob.setPosition(point);
-        return true;
-   }
-
-
     // factories:
 
     public static TileMap Room(Point size) {
@@ -42,4 +67,5 @@ public class TileMap {
         }
         return tileMap;
     }
+
 }

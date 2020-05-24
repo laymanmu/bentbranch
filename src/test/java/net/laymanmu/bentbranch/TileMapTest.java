@@ -41,5 +41,16 @@ public class TileMapTest {
         Assert.assertFalse("is not blocked", room.getTile(unblocked).isBlocked);
         Assert.assertTrue("can move", room.move(mob, unblocked));
     }
+
+    @Test
+    public void testCollision() {
+        Point point = new Point(1,1);
+        Mob mob1 = new Mob("mob1");
+        Mob mob2 = new Mob("mob2");
+        Assert.assertTrue("start", room.move(mob1, point));
+        Assert.assertFalse("collision", room.move(mob2, point));
+        Assert.assertTrue("clear way", room.move(mob1, mob1.getPosition().south(3)));
+        Assert.assertTrue("no collision", room.move(mob2, point));
+    }
 }
 
