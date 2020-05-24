@@ -35,4 +35,23 @@ public class MobTest {
         Assert.assertEquals("constitution", mob.getConstitution(), 10);
     }
 
+    @Test
+    public void testMoving() {
+        Point startPos = mob.getPosition();
+        Point nextPos = startPos.northWest(4);
+        Assert.assertEquals("start", startPos, mob.getPosition());
+        Assert.assertNotEquals("diff", startPos, nextPos);
+        mob.setPosition(nextPos);
+        Assert.assertEquals("next", nextPos, mob.getPosition());
+    }
+
+    @Test
+    public void testTargeting() {
+        Point startTarget = mob.getTarget();
+        Point nextTarget = new Point(33,44);
+        Assert.assertEquals("start", startTarget, mob.getTarget());
+        Assert.assertNotEquals("diff", startTarget, nextTarget);
+        mob.setTarget(nextTarget);
+        Assert.assertEquals("next", nextTarget, mob.getTarget());
+    }
 }
