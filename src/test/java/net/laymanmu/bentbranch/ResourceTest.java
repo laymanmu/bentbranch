@@ -1,7 +1,7 @@
-package net.laymanmu.BentBranch;
+package net.laymanmu.bentbranch;
 
-import net.laymanmu.BentBranch.ops.problems.Problem;
-import net.laymanmu.BentBranch.ops.problems.ResourceProblem;
+import net.laymanmu.bentbranch.ops.problems.Problem;
+import net.laymanmu.bentbranch.ops.problems.ResourceProblem;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,16 +16,16 @@ public class ResourceTest {
     public void setup() {
         consumer = new Mob("consumer");
 
-        health = Resource.build()
-                .withName("health")
+        health = Resource.builder()
+                .withName(Resource.Name.Health)
                 .withMin(0)
                 .withMax(100)
                 .withValue(100)
                 .withDelta(1)
                 .build();
 
-        energy = Resource.build()
-                .withName("energy")
+        energy = Resource.builder()
+                .withName(Resource.Name.Energy)
                 .withMin(0)
                 .withMax(100)
                 .withValue(100)
@@ -35,13 +35,13 @@ public class ResourceTest {
 
     @Test
     public void testDefaults() {
-        Assert.assertEquals("name", "health", health.getName());
+        Assert.assertEquals("name", Resource.Name.Health, health.getName());
         Assert.assertEquals("max", 100, health.getMax());
         Assert.assertEquals("delta", 1, health.getDelta());
         Assert.assertEquals("min", 0, health.getMin());
         Assert.assertEquals("value", 100, health.getValue());
 
-        Assert.assertEquals("name", "energy", energy.getName());
+        Assert.assertEquals("name", Resource.Name.Energy, energy.getName());
         Assert.assertEquals("max", 100, energy.getMax());
         Assert.assertEquals("delta", 10, energy.getDelta());
         Assert.assertEquals("min", 0, energy.getMin());

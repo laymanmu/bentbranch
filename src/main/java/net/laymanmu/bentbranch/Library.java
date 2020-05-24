@@ -1,4 +1,4 @@
-package net.laymanmu.BentBranch;
+package net.laymanmu.bentbranch;
 
 public class Library {
 

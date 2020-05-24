@@ -1,4 +1,4 @@
-package net.laymanmu.BentBranch;
+package net.laymanmu.bentbranch;
 
 import org.junit.Test;
 import org.junit.Assert;
@@ -8,6 +8,8 @@ public class PointTest {
     @Test
     public void testDirectionHelpers() {
         var p = new Point(10,10);
+
+        // defaults:
         Assert.assertEquals("north()", "(10,9)", p.north().toString());
         Assert.assertEquals("northEast()", "(11,9)", p.northEast().toString());
         Assert.assertEquals("east()", "(11,10)", p.east().toString());
@@ -17,6 +19,7 @@ public class PointTest {
         Assert.assertEquals("west()", "(9,10)", p.west().toString());
         Assert.assertEquals("northWest()", "(9,9)", p.northWest().toString());
 
+        // params:
         Assert.assertEquals("north(3)", "(10,7)", p.north(3).toString());
         Assert.assertEquals("northEast(2)", "(12,8)", p.northEast(2).toString());
         Assert.assertEquals("east(4)", "(14,10)", p.east(4).toString());
@@ -25,6 +28,9 @@ public class PointTest {
         Assert.assertEquals("southWest(3)", "(7,13)", p.southWest(3).toString());
         Assert.assertEquals("west(4)", "(6,10)", p.west(4).toString());
         Assert.assertEquals("northWest(1)", "(9,9)", p.northWest().toString());
+
+        // chains:
+        Assert.assertEquals("northWest(3).southEast(3)", "(10,10)", p.northWest(3).southEast(3).toString());
     }
 
     @Test
@@ -39,8 +45,13 @@ public class PointTest {
     public void testEquals() {
         var p1 = new Point(1,1);
         var p2 = new Point(1,1);
-        Assert.assertEquals(p1, p2);
-        p2 = new Point(10232, 33);
-        Assert.assertNotEquals(p1, p2);
+        Assert.assertTrue(p1.equals(p2));
+        Assert.assertTrue(p2.equals(p1));
+        p2 = new Point(1, 2);
+        Assert.assertFalse(p1.equals(p2));
+        Assert.assertFalse(p2.equals(p1));
+        p2 = new Point(2, 1);
+        Assert.assertFalse(p1.equals(p2));
+        Assert.assertFalse(p2.equals(p1));
     }
 }

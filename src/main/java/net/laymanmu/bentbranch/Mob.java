@@ -1,9 +1,13 @@
-package net.laymanmu.BentBranch;
+package net.laymanmu.bentbranch;
 
-import net.laymanmu.BentBranch.Actions.Action;
-import net.laymanmu.BentBranch.Actions.MoveAction;
-import net.laymanmu.BentBranch.ops.Settings;
+import net.laymanmu.bentbranch.actions.Action;
+import net.laymanmu.bentbranch.actions.MoveAction;
+import net.laymanmu.bentbranch.middleware.Middleware;
+import net.laymanmu.bentbranch.ops.Settings;
+import net.laymanmu.bentbranch.ops.problems.Problem;
+import net.laymanmu.bentbranch.ops.problems.ResourceProblem;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -26,8 +30,9 @@ public class Mob {
     private int constitution;
 
     // lists:
-    private HashMap<String,Resource> resources;
-    private HashMap<String, Action> actions;
+    private HashMap<Resource.Name,Resource> resources;
+    private HashMap<Action.Name, Action> actions;
+    private ArrayList<Middleware> middleware;
 
     public Mob(String name) {
         this.id   = UUID.randomUUID().toString();
@@ -41,18 +46,20 @@ public class Mob {
         this.constitution = Settings.Mob.DefaultConstitution;
 
         this.resources = new HashMap<>();
-        addResource(new Resource("health"));
-        addResource(new Resource("energy"));
+        addResource(Resource.builder().withName(Resource.Name.Health).build());
+        addResource(Resource.builder().withName(Resource.Name.Energy).withDelta(10).build());
 
         this.actions = new HashMap<>();
         addAction(new MoveAction(this));
+
+        this.middleware = new ArrayList<>();
     }
 
-    public boolean isAlive() {
-        return getHealth() > 0;
+    public boolean isAlive() throws ResourceProblem {
+        return getResourceValue(Resource.Name.Health) > 0;
     }
 
-    public void update() {
+    public void update(HashMap<String,String> state) throws Problem {
         if (!isAlive()) {
             return;
         }
@@ -62,23 +69,44 @@ public class Mob {
         for (var action : actions.values()) {
             action.update();
         }
+
+        // invoke middleware in order:
+        middleware.forEach(mw -> mw.invoke(state));
     }
+
 
     public void addResource(Resource resource) {
         this.resources.put(resource.getName(), resource);
     }
 
+    public int getResourceValue(Resource.Name resourceName) throws ResourceProblem {
+        var resource = this.resources.get(resourceName);
+        if (resource == null) {
+            throw Problem.ResourceNotFound(this, resourceName);
+        }
+        return resource.getValue();
+    }
+
+
+    public void addMiddleware(Middleware mw) {
+        middleware.add(mw);
+    }
+
+
     public void addAction(Action action) {
         this.actions.put(action.getName(), action);
     }
 
-    public int getHealth() {
-        return this.resources.get("health").getValue();
+    public Action getAction(Action.Name actionName) {
+        return this.actions.get(actionName);
     }
 
-    public int getEnergy() {
-        return this.resources.get("energy").getValue();
-    }
+
+
+
+
+
+
 
     @Override
     public String toString() {
@@ -87,7 +115,7 @@ public class Mob {
 
 
 
-    //region accessors
+    //region generated accessors
 
     public String getId() {
         return id;
@@ -145,19 +173,19 @@ public class Mob {
         this.constitution = constitution;
     }
 
-    public HashMap<String, Resource> getResources() {
+    public HashMap<Resource.Name, Resource> getResources() {
         return resources;
     }
 
-    public void setResources(HashMap<String, Resource> resources) {
+    public void setResources(HashMap<Resource.Name, Resource> resources) {
         this.resources = resources;
     }
 
-    public HashMap<String, Action> getActions() {
+    public HashMap<Action.Name, Action> getActions() {
         return actions;
     }
 
-    public void setActions(HashMap<String, Action> actions) {
+    public void setActions(HashMap<Action.Name, Action> actions) {
         this.actions = actions;
     }
 
@@ -172,14 +200,14 @@ public class Mob {
     //endregion accessors
 
 
-    //region builder
+    //region generated builder
 
     public static MobBuilder build(String mobName) {
         return MobBuilder.mob(mobName);
     }
 
     public static class MobBuilder {
-        private Mob mob;
+        private final Mob mob;
 
         private MobBuilder(String name) {
             mob = new Mob(name);
@@ -220,12 +248,12 @@ public class Mob {
             return this;
         }
 
-        public MobBuilder withResources(HashMap<String, Resource> resources) {
+        public MobBuilder withResources(HashMap<Resource.Name, Resource> resources) {
             mob.resources = resources;
             return this;
         }
 
-        public MobBuilder withActions(HashMap<String, Action> actions) {
+        public MobBuilder withActions(HashMap<Action.Name, Action> actions) {
             mob.actions = actions;
             return this;
         }
