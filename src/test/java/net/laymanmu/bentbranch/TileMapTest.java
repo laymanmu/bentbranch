@@ -54,7 +54,7 @@ public class TileMapTest {
     }
 
     @Test
-    public void testUpdate() {
+    public void testUpdatesReachMobResources() {
         Mob mob = new Mob("mob");
         Assert.assertTrue("move", room.move(mob, new Point(1,1)));
         Assert.assertEquals("health start", 100, mob.health());
@@ -75,6 +75,10 @@ public class TileMapTest {
         room.update();
         Assert.assertEquals("health update 2", 50+healthDelta*2, mob.health());
         Assert.assertEquals("energy update 2", 50+energyDelta*2, mob.energy());
+    }
+
+    @Test
+    public void testUpdatesClearDeadMobs() {
     }
 }
 

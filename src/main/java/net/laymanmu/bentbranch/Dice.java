@@ -1,5 +1,7 @@
 package net.laymanmu.bentbranch;
 
+import net.laymanmu.bentbranch.events.AttackEvent;
+
 import java.util.Random;
 
 public class Dice {
@@ -18,8 +20,9 @@ public class Dice {
     }
 
     public void attack(Mob attacker, Mob defender) {
-        int amount = roll(1,20) + 100;
-        System.out.println(attacker +" attacks "+ defender +" for "+ amount);
+        int baseAmount = roll(1,20);
+        int amount = (baseAmount / 10) * attacker.getStrength();
+        new AttackEvent(attacker.toString(), defender.toString(), amount).publish();
         defender.takeDamage(amount);
     }
 

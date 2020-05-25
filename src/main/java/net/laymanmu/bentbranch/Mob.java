@@ -70,16 +70,6 @@ public class Mob {
         return this.resources.get(resourceName).getValue();
     }
 
-    public Resource getResource(ResourceName resourceName) {
-        return resources.get(resourceName);
-    }
-
-
-    // syntactic helpers:
-
-    public static MobBuilder build() {
-        return Mob.MobBuilder.aMob();
-    }
 
     public void produce(ResourceName resourceName, int amount) {
         resources.get(resourceName).produce(amount);
@@ -189,6 +179,12 @@ public class Mob {
 
     public void setResources(HashMap<ResourceName, Resource> resources) {
         this.resources = resources;
+    }
+
+
+
+    public static MobBuilder build() {
+        return Mob.MobBuilder.aMob();
     }
 
 
