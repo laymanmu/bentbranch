@@ -79,6 +79,18 @@ public class TileMapTest {
 
     @Test
     public void testUpdatesClearDeadMobs() {
+        Point point1 = new Point(1,1);
+        Point point2 = new Point(2,2);
+        Mob mob1 = new Mob("mob1");
+        Mob mob2 = Mob.build("mob2").withStrength(9999).build();
+        Assert.assertTrue("move mob1", room.move(mob1, point1));
+        Assert.assertTrue("move mob2", room.move(mob2, point2));
+        Assert.assertEquals("starting mob count", 2, room.getMobCount());
+
+        // attack:
+        Assert.assertFalse(room.move(mob2, point1));
+        room.update();
+        Assert.assertEquals("ending mob count", 1, room.getMobCount());
     }
 }
 

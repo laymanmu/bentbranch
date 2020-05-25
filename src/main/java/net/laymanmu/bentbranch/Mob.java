@@ -92,10 +92,6 @@ public class Mob {
     }
 
 
-
-
-
-
     @Override
     public String toString() {
         return "mob:" + getName();
@@ -183,99 +179,84 @@ public class Mob {
 
 
 
-    public static MobBuilder build() {
-        return Mob.MobBuilder.aMob();
+    public static MobBuilder build(String name) {
+        return MobBuilder.mob(name);
     }
 
 
-    public static final class MobBuilder {
-        // identifiers:
-        private String id;
-        private String name;
-        // position:
-        private Point position;
-        private Point target;
-        // progression:
-        private long experience;
-        private int level;
-        // attributes:
-        private int dexterity;
-        private int intelligence;
-        private int strength;
-        private int constitution;
-        // resources:
-        private HashMap<ResourceName, Resource> resources;
 
-        private MobBuilder() {
+
+    public static class MobBuilder
+    {
+        private Mob mob;
+
+        private MobBuilder(String name)
+        {
+            mob = new Mob(name);
         }
 
-        public static MobBuilder aMob() {
-            return new MobBuilder();
-        }
-
-        public MobBuilder withName(String name) {
-            this.name = name;
+        public MobBuilder withPosition(Point position)
+        {
+            mob.position = position;
             return this;
         }
 
-        public MobBuilder withPosition(Point position) {
-            this.position = position;
+        public MobBuilder withTarget(Point target)
+        {
+            mob.target = target;
             return this;
         }
 
-        public MobBuilder withTarget(Point target) {
-            this.target = target;
+        public MobBuilder withExperience(long experience)
+        {
+            mob.experience = experience;
             return this;
         }
 
-        public MobBuilder withExperience(long experience) {
-            this.experience = experience;
+        public MobBuilder withLevel(int level)
+        {
+            mob.level = level;
             return this;
         }
 
-        public MobBuilder withLevel(int level) {
-            this.level = level;
+        public MobBuilder withDexterity(int dexterity)
+        {
+            mob.dexterity = dexterity;
             return this;
         }
 
-        public MobBuilder withDexterity(int dexterity) {
-            this.dexterity = dexterity;
+        public MobBuilder withIntelligence(int intelligence)
+        {
+            mob.intelligence = intelligence;
             return this;
         }
 
-        public MobBuilder withIntelligence(int intelligence) {
-            this.intelligence = intelligence;
+        public MobBuilder withStrength(int strength)
+        {
+            mob.strength = strength;
             return this;
         }
 
-        public MobBuilder withStrength(int strength) {
-            this.strength = strength;
+        public MobBuilder withConstitution(int constitution)
+        {
+            mob.constitution = constitution;
             return this;
         }
 
-        public MobBuilder withConstitution(int constitution) {
-            this.constitution = constitution;
+        public MobBuilder withResources(HashMap<ResourceName, Resource> resources)
+        {
+            mob.resources = resources;
             return this;
         }
 
-        public MobBuilder withResources(HashMap<Resource.ResourceName, Resource> resources) {
-            this.resources = resources;
-            return this;
+        public static MobBuilder mob(String name)
+        {
+            return new MobBuilder(name);
         }
 
-        public Mob build() {
-            Mob mob = new Mob(name);
-            mob.setPosition(position);
-            mob.setTarget(target);
-            mob.setExperience(experience);
-            mob.setLevel(level);
-            mob.setDexterity(dexterity);
-            mob.setIntelligence(intelligence);
-            mob.setStrength(strength);
-            mob.setConstitution(constitution);
-            mob.setResources(resources);
+        public Mob build()
+        {
             return mob;
         }
     }
 }
-

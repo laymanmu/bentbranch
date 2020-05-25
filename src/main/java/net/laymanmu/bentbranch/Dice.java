@@ -19,11 +19,11 @@ public class Dice {
         return random.nextInt((max - min) + 1) + min;
     }
 
-    public void attack(Mob attacker, Mob defender) {
+    public AttackEvent attack(Mob attacker, Mob defender) {
         int baseAmount = roll(1,20);
-        int amount = (baseAmount / 10) * attacker.getStrength();
-        new AttackEvent(attacker.toString(), defender.toString(), amount).publish();
+        float deduced  = baseAmount / 10f;
+        int amount     = Math.round(deduced * attacker.getStrength());
         defender.takeDamage(amount);
+        return new AttackEvent(attacker.toString(), defender.toString(), amount);
     }
-
 }

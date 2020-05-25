@@ -1,29 +1,33 @@
 package net.laymanmu.bentbranch;
 
+import net.laymanmu.bentbranch.events.DeathEvent;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TileMap {
     public final Point size;
     private final Tile[] tiles;
-    private final HashMap<String,Mob> mobs;
+    private List<Mob> mobs;
     private final Dice dice;
 
     public TileMap(int width, int height) {
         this.size = new Point(width,height);
         this.tiles = new Tile[width*height];
-        this.mobs = new HashMap<>();
+        this.mobs = new ArrayList<>();
         this.dice = new Dice();
     }
 
     public void onCollision(Mob movingMob, Mob restingMob) {
-        this.dice.attack(movingMob, restingMob);
-        if (!restingMob.isAlive()) {
-            System.out.println(restingMob +" has died");
-        }
+        this.dice.attack(movingMob, restingMob).publish();
     }
 
     public boolean move(Mob mob, Point point) {
-        mobs.put(mob.getId(), mob);
+        if (!mobs.contains(mob)) {
+            mobs.add(mob);
+        }
 
         if (getTile(point).isBlocked) {
             return false;
@@ -40,12 +44,16 @@ public class TileMap {
     }
 
     public Mob getMob(Point point) {
-        for (var mob : mobs.values()) {
+        for (var mob : mobs) {
             if (mob.getPosition().equals(point)) {
                 return mob;
             }
         }
         return null;
+    }
+
+    public int getMobCount() {
+        return mobs.size();
     }
 
     public Tile getTile(int x, int y) {
@@ -61,9 +69,12 @@ public class TileMap {
     }
 
     public void update() {
-        mobs.values().stream().filter(mob -> mob.isAlive()).forEach(mob -> mob.update(this));
+        var livingMobs = mobs.stream().filter(mob -> mob.isAlive()).collect(Collectors.toList());
+        var deadMobs = mobs.stream().filter(mob -> !mob.isAlive());
+        livingMobs.forEach(mob -> mob.update(this));
+        deadMobs.forEach(mob -> new DeathEvent(mob.getName(), "the mob").publish());
+        mobs = livingMobs;
     }
-
 
     // factories:
 
