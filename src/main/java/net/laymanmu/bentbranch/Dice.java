@@ -20,10 +20,14 @@ public class Dice {
     }
 
     public AttackEvent attack(Mob attacker, Mob defender) {
-        int baseAmount = roll(1,20);
-        float deduced  = baseAmount / 10f;
-        int amount     = Math.round(deduced * attacker.getStrength());
-        defender.takeDamage(amount);
-        return new AttackEvent(attacker.toString(), defender.toString(), amount);
+        int baseAttackRoll  = roll(1,20);
+        int averageStrength = 10;
+        int strengthDiff    = attacker.getStrength() - averageStrength;
+        int baseAttack      = baseAttackRoll + strengthDiff;
+        if (baseAttack < 1) {
+            return new AttackEvent(attacker.toString(), defender.toString(), 0);
+        }
+        defender.takeDamage(baseAttack);
+        return new AttackEvent(attacker.toString(), defender.toString(), baseAttack);
     }
 }

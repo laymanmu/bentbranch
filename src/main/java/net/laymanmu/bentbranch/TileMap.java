@@ -3,7 +3,6 @@ package net.laymanmu.bentbranch;
 import net.laymanmu.bentbranch.events.DeathEvent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,7 +68,7 @@ public class TileMap {
     }
 
     public void update() {
-        var livingMobs = mobs.stream().filter(mob -> mob.isAlive()).collect(Collectors.toList());
+        var livingMobs = mobs.stream().filter(Mob::isAlive).collect(Collectors.toList());
         var deadMobs = mobs.stream().filter(mob -> !mob.isAlive());
         livingMobs.forEach(mob -> mob.update(this));
         deadMobs.forEach(mob -> new DeathEvent(mob.getName(), "the mob").publish());
