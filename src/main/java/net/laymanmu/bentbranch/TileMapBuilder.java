@@ -4,7 +4,7 @@ public class TileMapBuilder {
     private TileMapBuilder() {}
 
     public static TileMap buildRoom(int width, int height) {
-        TileMap tileMap = new TileMap(width, height, new TileMapSymbols());
+        TileMap tileMap = new TileMap(width, height);
         for (int x=0; x<width; x++) {
             for (int y=0; y<height; y++) {
                 TileType tileType = isBorder(width, height, x, y) ? TileType.Wall : TileType.Floor;

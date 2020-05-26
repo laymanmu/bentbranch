@@ -4,12 +4,10 @@ public class TileMap {
     private int width;
     private int height;
     private Tile[] tiles;
-    private TileMapSymbols symbols;
 
-    public TileMap(int width, int height, TileMapSymbols symbols) {
+    public TileMap(int width, int height) {
         this.width = width;
         this.height = height;
-        this.symbols = symbols;
         this.tiles = new Tile[width*height];
     }
 
@@ -26,8 +24,7 @@ public class TileMap {
         var sb = new StringBuilder();
         for (int y=0; y<this.height; y++) {
             for (int x=0; x<this.width; x++) {
-                String tileSymbol = this.symbols.getSymbol(getTile(x,y).tileType);
-                sb.append(tileSymbol);
+                sb.append(getTile(x,y).tileType.symbol);
             }
             sb.append("\n");
         }
