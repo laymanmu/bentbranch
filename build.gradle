@@ -1,6 +1,9 @@
 plugins {
-    id 'java-library'
+    id 'java'
+    id 'application'
 }
+
+mainClassName = 'net.laymanmu.bentbranch.Window'
 
 repositories {
     jcenter()

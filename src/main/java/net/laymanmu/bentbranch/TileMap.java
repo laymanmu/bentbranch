@@ -1,14 +1,16 @@
 package net.laymanmu.bentbranch;
 
+import java.awt.*;
+
 public class TileMap {
-    private int width;
-    private int height;
-    private Tile[] tiles;
+    private final int width;
+    private final int height;
+    private final Tile[] tiles;
 
     public TileMap(int width, int height) {
-        this.width = width;
+        this.width  = width;
         this.height = height;
-        this.tiles = new Tile[width*height];
+        this.tiles  = new Tile[width*height];
     }
 
     public Tile getTile(int x, int y) {
@@ -29,5 +31,23 @@ public class TileMap {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    public void draw(Graphics g) {
+        for (int y = 0; y < this.height; y++) {
+            for (int x = 0; x < this.width; x++) {
+                try {
+                    var tile = getTile(x, y);
+                    var image = tile.tileType.image;
+                    if (image == null) {
+                        System.out.println("image null for tileType: " + tile.tileType);
+                    } else {
+                        g.drawImage(image, x * Window.TileSize, y * Window.TileSize, null);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
