@@ -1,11 +1,11 @@
-package net.laymanmu.bentbranch;
+package net.laymanmu.bentbranch.tiles;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class TileMapBuilder {
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     private TileMapBuilder() {}
 

@@ -1,4 +1,7 @@
-package net.laymanmu.bentbranch;
+package net.laymanmu.bentbranch.ui;
+import net.laymanmu.bentbranch.tiles.TileMap;
+import net.laymanmu.bentbranch.tiles.TileMapBuilder;
+
 import javax.swing.*;
 import java.awt.*;
 

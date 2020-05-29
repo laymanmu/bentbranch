@@ -1,4 +1,4 @@
-package net.laymanmu.bentbranch;
+package net.laymanmu.bentbranch.ui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Window extends JFrame implements KeyListener, FocusListener, MouseListener {
-    private static final GraphicsDevice graphics = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
-
     public static final String WindowTitle = "BentBranch";
     public static final int TileSize = 32;
     public static final int TileMapWidth = 20;

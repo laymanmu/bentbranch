@@ -3,7 +3,7 @@ plugins {
     id 'application'
 }
 
-mainClassName = 'net.laymanmu.bentbranch.Window'
+mainClassName = 'net.laymanmu.bentbranch.ui.Window'
 
 repositories {
     jcenter()

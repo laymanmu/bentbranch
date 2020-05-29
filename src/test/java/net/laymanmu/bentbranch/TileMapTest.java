@@ -1,5 +1,8 @@
 package net.laymanmu.bentbranch;
 
+import net.laymanmu.bentbranch.tiles.TileMap;
+import net.laymanmu.bentbranch.tiles.TileMapBuilder;
+import net.laymanmu.bentbranch.tiles.TileType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +29,7 @@ public class TileMapTest {
                 if (x == 0 || y == 0  || x == roomWidth-1 || y == roomHeight-1) {
                     Assert.assertEquals(msg, TileType.Wall, tile.tileType);
                 } else {
-                    Assert.assertEquals(msg, TileType.Floor, tile.tileType);
+                    Assert.assertTrue(msg, tile.tileType == TileType.Floor || tile.tileType == TileType.Gate);
                 }
             }
         }

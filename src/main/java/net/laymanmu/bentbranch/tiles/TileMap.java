@@ -1,4 +1,6 @@
-package net.laymanmu.bentbranch;
+package net.laymanmu.bentbranch.tiles;
+
+import net.laymanmu.bentbranch.ui.Window;
 
 import java.awt.*;
 
@@ -51,3 +53,4 @@ public class TileMap {
         }
     }
 }
+
