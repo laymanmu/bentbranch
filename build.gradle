@@ -19,6 +19,7 @@ repositories {
 
 dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'uk.ac.abdn:SimpleNLG:4.4.8'
 
     testImplementation 'junit:junit:4.12'
 }

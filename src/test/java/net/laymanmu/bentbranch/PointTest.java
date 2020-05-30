@@ -1,5 +1,6 @@
 package net.laymanmu.bentbranch;
 
+import net.laymanmu.bentbranch.world.Point;
 import org.junit.Test;
 import org.junit.Assert;
 
