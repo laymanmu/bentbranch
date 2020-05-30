@@ -1,13 +1,13 @@
-package laymanmu.roguelike.mob;
+package laymanmu.bentbranch.mob;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import laymanmu.roguelike.ai.CreatureAI;
-import laymanmu.roguelike.text.TextFactory;
-import laymanmu.roguelike.world.Tile;
-import laymanmu.roguelike.world.World;
+import laymanmu.bentbranch.ai.CreatureAI;
+import laymanmu.bentbranch.text.TextFactory;
+import net.laymanmu.bentbranch.world.Tile;
+import net.laymanmu.bentbranch.world.World;
 
 public class Creature {
 	

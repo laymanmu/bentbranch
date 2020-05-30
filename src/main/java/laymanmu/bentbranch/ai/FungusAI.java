@@ -1,7 +1,7 @@
-package laymanmu.roguelike.ai;
+package laymanmu.bentbranch.ai;
 
-import laymanmu.roguelike.mob.Creature;
-import laymanmu.roguelike.mob.CreatureFactory;
+import laymanmu.bentbranch.mob.Creature;
+import laymanmu.bentbranch.mob.CreatureFactory;
 
 public class FungusAI extends CreatureAI {
 

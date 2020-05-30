@@ -1,11 +1,9 @@
-package laymanmu.roguelike.world;
+package net.laymanmu.bentbranch.world;
 
-import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import laymanmu.roguelike.mob.Creature;
+import laymanmu.bentbranch.mob.Creature;
 
 public class World {
 	
@@ -37,14 +35,6 @@ public class World {
 		} else {
 			return tiles[x][y][z];
 		}
-	}
-	
-	public char glyph(int x, int y, int z) {
-		return tile(x, y, z).glyph();
-	}
-	
-	public Color color(int x, int y, int z) {
-		return tile(x, y, z).color();
 	}
 	
 	public void dig(int x, int y, int z) {
@@ -93,6 +83,5 @@ public class World {
 	public boolean isBlocked(int x, int y, int z) {
 		return tile(x,y,z).isBlocked() || creatureAt(x,y,z) != null;
 	}
-
 
 }

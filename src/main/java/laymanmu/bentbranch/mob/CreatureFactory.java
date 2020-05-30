@@ -1,9 +1,9 @@
-package laymanmu.roguelike.mob;
+package laymanmu.bentbranch.mob;
 
-import laymanmu.roguelike.ai.FungusAI;
-import laymanmu.roguelike.ai.PlayerAI;
-import laymanmu.roguelike.text.TextFactory;
-import laymanmu.roguelike.world.World;
+import laymanmu.bentbranch.ai.FungusAI;
+import laymanmu.bentbranch.ai.PlayerAI;
+import laymanmu.bentbranch.text.TextFactory;
+import net.laymanmu.bentbranch.world.World;
 
 import java.awt.*;
 import java.util.List;

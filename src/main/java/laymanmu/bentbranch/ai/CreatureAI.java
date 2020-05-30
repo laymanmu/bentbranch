@@ -1,7 +1,7 @@
-package laymanmu.roguelike.ai;
+package laymanmu.bentbranch.ai;
 
-import laymanmu.roguelike.mob.Creature;
-import laymanmu.roguelike.world.Tile;
+import laymanmu.bentbranch.mob.Creature;
+import net.laymanmu.bentbranch.world.Tile;
 
 public class CreatureAI {
 

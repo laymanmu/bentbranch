@@ -1,6 +1,6 @@
-package laymanmu.roguelike.text;
+package laymanmu.bentbranch.text;
 
-import laymanmu.roguelike.mob.Creature;
+import laymanmu.bentbranch.mob.Creature;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package laymanmu.roguelike.text;
+package laymanmu.bentbranch.text;
 
 import simplenlg.features.Feature;
 import simplenlg.features.Tense;

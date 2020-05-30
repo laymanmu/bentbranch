@@ -1,4 +1,4 @@
-package laymanmu.roguelike.world;
+package net.laymanmu.bentbranch.world;
 
 import java.util.ArrayList;
 import java.util.Collections;
